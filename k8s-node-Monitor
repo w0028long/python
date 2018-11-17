@@ -1,0 +1,26 @@
+#!/usr/bin/python
+# --*-- coding:utf-8 --*--
+#python调用shell命令
+import os
+os.system("kubectl get nodes > node.txt")
+os.system("awk '{print$2}' node.txt > node2.txt")
+os.system("sed -i '1d' node2.txt")
+os.system("rm -rf node.txt")
+#python处理相关结果
+
+with open("node2.txt", "r") as f:
+    get = f.readlines()
+#print(get)
+for i in get:
+    #print(i.strip())
+    #print(i.strip() == "Ready")
+    if i.strip() != "Ready":
+        print("异常")
+    else:
+        print("ok")
+    #if "Not" in i:
+    #    print("节点挂了，快看看吧！")
+    #else:
+    #    print("ok")
+f.close()
+os.system("rm -rf node2.txt")
